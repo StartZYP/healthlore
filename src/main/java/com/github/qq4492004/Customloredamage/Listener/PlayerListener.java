@@ -33,6 +33,7 @@ public class PlayerListener implements Listener {
         double finalDamge;
         double finalCrit = 0;
         if (event.getDamager() instanceof Player){
+            //System.out.println("攻击者是玩家");
             Player player= (Player) event.getDamager();
             PlayerAttribute playerAttribute = main.playersatt.get(player.getName());
             double maxdamage1 = playerAttribute.getMaxDamage();
@@ -42,19 +43,27 @@ public class PlayerListener implements Listener {
             double suckhealthRate = playerAttribute.getSuckhealthRate();
             double suckhealthDouble = playerAttribute.getSuckhealthDouble();
             finalDamge = new Random().nextInt((int)maxdamage1) % (int)(maxdamage1-minDamage+1) + (int)minDamage;
-            double tmpsuckhealth = 0;
+            //System.out.println("攻击者是玩家伤害为:"+finalDamge);
             if(Math.random()<suckhealthRate/100){
-                tmpsuckhealth+= finalDamge*suckhealthDouble;
-                player.setHealth(player.getHealth()+tmpsuckhealth);
-                player.sendMessage("触发吸血"+tmpsuckhealth);
+                double health = player.getHealth();
+                double tmpsuckhealth = finalDamge*(suckhealthDouble/100);
+
+                if (playerAttribute.getHealth()<=(tmpsuckhealth+health)){
+                    player.setHealth(playerAttribute.getHealth());
+                    player.sendMessage("触发吸血已吸满");
+                }else {
+                    player.setHealth(player.getHealth()+tmpsuckhealth);
+                    player.sendMessage("触发吸血"+tmpsuckhealth);
+                }
             }
             if(Math.random()<critRate/100){
-                finalCrit = finalDamge*critDouble;
+                finalCrit = finalDamge*(critDouble/100);
                 finalDamge += finalCrit;
                 player.sendMessage("触发暴击"+finalDamge);
             }
         }else {
             finalDamge = event.getFinalDamage();
+            //System.out.println("攻击者是怪物");
         }
 
         if(event.getEntity() instanceof Player){
@@ -62,10 +71,12 @@ public class PlayerListener implements Listener {
             PlayerAttribute playerAttribute1 = main.playersatt.get(player.getName());
             double critfense = playerAttribute1.getCritfense();
             double damagerebound = playerAttribute1.getDamagerebound();
+            double defense = playerAttribute1.getDefense();
             double pluginDamage = finalDamge/playerAttribute1.getDefense();
+            //System.out.println("被攻击者是玩家防御力"+defense+"除得"+pluginDamage);
             if(event.getDamager() instanceof Player){
                 if(Math.random()<critfense/100){
-                    finalDamge -= finalCrit;
+                    pluginDamage -= finalCrit;
                     player.sendMessage("暴击抵抗"+finalCrit);
                 }
                 if(Math.random()<damagerebound/100){
@@ -80,9 +91,11 @@ public class PlayerListener implements Listener {
                event.setCancelled(true);
                 player.sendMessage("攻击被抵抗"+finalDamge);
             }
-            event.setDamage(finalDamge);
+            event.setDamage(pluginDamage);
         }else {
             event.setDamage(finalDamge);
+            //System.out.println("被攻击者是怪物");
+            //event.setDamage(finalDamge);
         }
     }
 
@@ -205,12 +218,15 @@ public class PlayerListener implements Listener {
         }else {
             player.setMaxHealth(attr.getHealth() + 20.0D);
         }
+        //player.setHealthScale(20);
     }
 
     public void setPlayerSpeed(PlayerAttribute attr, Player player){
         double speed = attr.getSpeed();
         if (speed>0){
-            player.setWalkSpeed((float) speed);
+            player.setWalkSpeed(0.2f+(float) (attr.getSpeed()/100));
+        }else {
+            player.setWalkSpeed(0.2f);
         }
     }
 

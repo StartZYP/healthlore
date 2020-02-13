@@ -10,7 +10,7 @@ import java.util.Iterator;
 
 public class UtilAtt {
     public static PlayerAttribute GetPlayerItemAttribute(Player player,int i){
-        PlayerAttribute playerAttribute = new PlayerAttribute(10, 10, 1, 0,0,20,0,0,0,0,0,0);
+        PlayerAttribute playerAttribute = new PlayerAttribute(2, 1, 1, 0,0,0,0,0,0,0,0,0);
         TempAttribute tempAttribute =null;
         if (player.getInventory().getItem(i) != null) {
             tempAttribute = getEquipStates(player.getInventory().getItem(i));
@@ -37,7 +37,7 @@ public class UtilAtt {
 
 
     public static PlayerAttribute GetPlayerAttribute(Player player){
-        PlayerAttribute playerAttribute =new PlayerAttribute(10, 10, 1, 0,0,20,0,0,0,0,0,0);
+        PlayerAttribute playerAttribute =new PlayerAttribute(2, 1, 1, 0,0,0,0,0,0,0,0,0);
         TempAttribute tempAttribute =null;
         if (player.getInventory().getItemInMainHand() != null) {
             //System.out.println("手上有物品"+player.getItemInHand().getType());
@@ -154,9 +154,9 @@ public class UtilAtt {
         }
     }
     private static double getDamagerebound(String lore){
-        if (lore.contains(ConfigAttribute.Damagerebound)) {
+        if (lore.contains(ConfigAttribute.Damagerebound)&&lore.contains("%")) {
             String[] s = lore.split(ConfigAttribute.split);
-            return Double.parseDouble(s[1]);
+            return Double.parseDouble(s[1].substring(0,s[1].length()-1));
         } else {
             return 0;
         }
@@ -170,9 +170,9 @@ public class UtilAtt {
         }
     }
     private static double getSuckhealthRate(String lore){
-        if (lore.contains(ConfigAttribute.SuckhealthRate)) {
+        if (lore.contains(ConfigAttribute.SuckhealthRate)&&lore.contains("%")) {
             String[] s = lore.split(ConfigAttribute.split);
-            return Double.parseDouble(s[1]);
+            return Double.parseDouble(s[1].substring(0,s[1].length()-1));
         } else {
             return 0;
         }
@@ -189,27 +189,27 @@ public class UtilAtt {
     }
 
     private static double getSpeed(String lore){
-        if (lore.contains(ConfigAttribute.Speed)) {
+        if (lore.contains(ConfigAttribute.Speed)&&lore.contains("%")) {
             String[] s = lore.split(ConfigAttribute.split);
-            return Double.parseDouble(s[1]);
+            return Double.parseDouble(s[1].substring(0,s[1].length()-1));
         } else {
             return 0;
         }
     }
 
     private static double getCritRate(String lore){
-        if (lore.contains(ConfigAttribute.CritRate)) {
+        if (lore.contains(ConfigAttribute.CritRate)&&lore.contains("%")) {
             String[] s = lore.split(ConfigAttribute.split);
-            return Double.parseDouble(s[1]);
+            return Double.parseDouble(s[1].substring(0,s[1].length()-1));
         } else {
             return 0;
         }
     }
 
     private static double getCritDouble(String lore){
-        if (lore.contains(ConfigAttribute.CritDouble)) {
+        if (lore.contains(ConfigAttribute.CritDouble)&&lore.contains("%")) {
             String[] s = lore.split(ConfigAttribute.split);
-            return Double.parseDouble(s[1]);
+            return Double.parseDouble(s[1].substring(0,s[1].length()-1));
         } else {
             return 0;
         }

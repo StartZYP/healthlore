@@ -42,8 +42,20 @@ public class main extends JavaPlugin implements Listener {
         ConfigReload();
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerListener(),this);
         Bukkit.getServer().getPluginManager().registerEvents(this,this);
-        Bukkit.getServer().getPluginCommand("").setExecutor(new hl());
-        
+        Bukkit.getServer().getPluginCommand("hl").setExecutor(new hl());
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (Player player:Bukkit.getOnlinePlayers()){
+                    PlayerAttribute playerAttribute = main.playersatt.get(player.getName());
+                    double lifeSpawn = playerAttribute.getLifeSpawn();
+                    if (player.getHealth() <= playerAttribute.getHealth()){
+                        player.setHealth(player.getHealth()+lifeSpawn);
+                    }
+                    player.setHealth(player.getHealth());
+                }
+            }
+        }.runTaskTimer(this,20L,10L*10);
         super.onEnable();
     }
 

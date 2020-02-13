@@ -10,4 +10,5 @@ state:
   SuckhealthRate: '吸血几率'
   SuckhealthDouble: '吸血倍率'
   Damagerebound: '伤害反弹'
+  Dodge: '闪避'
 split: ":"

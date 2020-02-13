@@ -36,8 +36,8 @@ public class hl implements CommandExecutor {
             }
         }else if (args.length==1&&args[0].equalsIgnoreCase("info")){
             OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(sender.getName());
-            if (offlinePlayer.isOnline()&&main.playersatt.containsKey(args[1])){
-                PlayerAttribute playerAttribute = main.playersatt.get(args[1]);
+            if (offlinePlayer.isOnline()&&main.playersatt.containsKey(sender.getName())){
+                PlayerAttribute playerAttribute = main.playersatt.get(sender.getName());
                 sender.sendMessage("§a-----玩家属性属性-----");
                 sender.sendMessage("§8血量:"+playerAttribute.getHealth());
                 sender.sendMessage("§8攻击:"+playerAttribute.getMinDamage()+"-"+playerAttribute.getMaxDamage());
